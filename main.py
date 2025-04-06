@@ -1,6 +1,6 @@
 # main.py
 import os
-from utils.helpers import format_data, validate_input, process_batch, generate_report
+from utils.helpers import *
 
 def load_data(filepath):
     """
@@ -105,7 +105,9 @@ def main():
         transformed_data = transform_data(data)
         
         # Process in batches
-        processed_data = process_batch(transformed_data, config["max_threads"])
+        processed_data = process_batch(
+            transformed_data, 
+            config["max_threads"])
         
         # Save results
         if save_results(processed_data, output_path):
