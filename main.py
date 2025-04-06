@@ -110,7 +110,9 @@ def main():
             config["max_threads"])
         
         # Save results
-        if save_results(processed_data, output_path):
+        if save_results(
+            processed_data, 
+            output_path):
             print("Results saved successfully!")
         
         # Display summary
