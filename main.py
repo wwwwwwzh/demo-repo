@@ -2,6 +2,56 @@
 import os
 from utils.helpers import *
 
+class DemoApp:
+    """
+    A class that encapsulates the main processing flow of the demo application.
+    """
+    def __init__(self, config):
+        """
+        Initialize the DemoApp with a given configuration.
+
+        Args:
+            config (dict): Configuration dictionary for the demo app.
+        """
+        self.config = config
+        print(f"DemoApp initialized with config: {config}")
+
+    def run_demo(self, input_path):
+        """
+        Run the full demo workflow using the provided input_path.
+        
+        Args:
+            input_path (str): The path to the input file.
+        """
+        # Ensure the input is valid
+        if validate_input(input_path):
+            # Load data
+            data = load_data(input_path)
+
+            # Transform data
+            transformed_data = transform_data(data)
+
+            # Process data in batches
+            processed_data = process_batch(
+                transformed_data, 
+                self.config["max_threads"]
+            )
+
+            # Save results
+            output_path = f"{self.config['temp_dir']}/output.json"
+            if save_results(processed_data, output_path):
+                print("Results saved successfully!")
+
+            # Display summary
+            display_summary(processed_data)
+
+            # Generate report
+            report = generate_report(processed_data)
+            print(f"Report generated: {report}")
+        else:
+            print("Invalid input. Exiting.")
+
+
 def load_data(filepath):
     """
     Load data from the specified file path
@@ -92,37 +142,14 @@ def main():
     # Setup environment
     config = setup_environment()
     
-    # Define input and output paths
+    # Create the demo application object
+    app = DemoApp(config)
+
+    # Define input path
     input_path = "data/input.json"
-    output_path = f"{config['temp_dir']}/output.json"
-    
-    # Ensure the input is valid
-    if validate_input(input_path):
-        # Load data
-        data = load_data(input_path)
-        
-        # Transform data
-        transformed_data = transform_data(data)
-        
-        # Process in batches
-        processed_data = process_batch(
-            transformed_data, 
-            config["max_threads"])
-        
-        # Save results
-        if save_results(
-            processed_data, 
-            output_path):
-            print("Results saved successfully!")
-        
-        # Display summary
-        display_summary(processed_data)
-        
-        # Generate report
-        report = generate_report(processed_data)
-        print(f"Report generated: {report}")
-    else:
-        print("Invalid input. Exiting.")
+
+    # Run the full workflow
+    app.run_demo(input_path)
     
     print("Demo application completed.")
 
