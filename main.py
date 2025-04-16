@@ -179,6 +179,7 @@ def main():
     input_path = "data/input.json"
 
     # Run the full workflow via the helper function
+    app.run_demo(input_path)
     process_app(app, input_path)
 
     print("Demo application completed.")
