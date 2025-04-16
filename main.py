@@ -17,6 +17,20 @@ class DemoApp:
         self.config = config
         print(f"DemoApp initialized with config: {config}")
 
+
+    def run_demo_helper(self, input_path):
+        data = load_data(input_path)
+
+        # Transform data
+        transformed_data = transform_data(data)
+
+        # Process data in batches
+        processed_data = process_batch(
+            transformed_data,
+            self.config["max_threads"]
+        )
+        return processed_data
+
     def run_demo(self, input_path):
         """
         Run the full demo workflow using the provided input_path.
@@ -27,16 +41,7 @@ class DemoApp:
         # Ensure the input is valid
         if validate_input(input_path):
             # Load data
-            data = load_data(input_path)
-
-            # Transform data
-            transformed_data = transform_data(data)
-
-            # Process data in batches
-            processed_data = process_batch(
-                transformed_data,
-                self.config["max_threads"]
-            )
+            processed_data = self.run_demo_helper(input_path)
 
             # Save results
             output_path = f"{self.config['temp_dir']}/output.json"
