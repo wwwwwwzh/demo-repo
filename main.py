@@ -1,6 +1,7 @@
 # main.py
 import os
 from utils.helpers import *
+from model import DataLoader
 
 class DemoApp:
     """
@@ -182,6 +183,12 @@ def main():
 
     # Define input path
     input_path = "data/input.json"
+    data_loader = DataLoader(input_path)
+    data = data_loader.load_data()
+    print(f"Loaded {len(data)} items")
+    processed = data_loader.preprocess_data()
+    print(f"Processed {len(processed)} items")
+
 
     # Run the full workflow via the helper function
     app.run_demo(input_path)
